@@ -1,15 +1,63 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+/* eslint-disable react/react-in-jsx-scope */
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { StyleSheet, ActivityIndicator, StatusBar, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import LoginScreen from "./screens/LoginScreen";
+import SignupScreen from "./screens/SignupScreen";
+import { LOGIN_SCREEN, SIGNUP_SCREEN, HOME_STACK, PROFILE_STACK } from "./constants";
+import HomeStack from "./components/HomeStack";
+import ProfileStack from "./components/ProfileStack";
+
+// import { auth } from "./database/firebaseDB";
+
+
+const Stack = createStackNavigator();
+
 
 export default function App() {
-  return (
+  const [loading, setLoading] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  async function setToken() {
+    const token = await AsyncStorage.getItem("token");
+    setLoggedIn(token);
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    setToken();
+  }, []);
+
+  const LoadingScreen = () => (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <ActivityIndicator />
     </View>
   );
-}
 
+  const AppScreen = () => (
+    <NavigationContainer>
+      <StatusBar />
+      <Stack.Navigator
+        initialRouteName={ LOGIN_SCREEN }
+        screenOptions={{ animationEnabled: false, headerShown: false }}
+      >
+        <Stack.Screen component={LoginScreen} name={LOGIN_SCREEN} />
+        <Stack.Screen component={SignupScreen} name={SIGNUP_SCREEN} />
+        <Stack.Screen component={HomeStack} name={HOME_STACK} />
+        <Stack.Screen component={ProfileStack} name={PROFILE_STACK} />
+
+        {/* <Stack.Screen component={ProfileScreen} name={PROFILE_SCREEN} />
+        <Stack.Screen component={PostScreen} name={POST_SCREEN} />
+        <Stack.Screen component={AddScreen} name={ADD_SCREEN} /> */}
+
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+
+  return loading ? <LoadingScreen /> : <AppScreen />;
+  }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
