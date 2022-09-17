@@ -6,9 +6,10 @@ import { StyleSheet, ActivityIndicator, StatusBar, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import LoginScreen from "./screens/LoginScreen";
 import SignupScreen from "./screens/SignupScreen";
-import { LOGIN_SCREEN, SIGNUP_SCREEN, HOME_STACK, PROFILE_STACK } from "./constants";
+import { LOGIN_SCREEN, SIGNUP_SCREEN, HOME_STACK, PROFILE_STACK, CONTACT_STACK } from "./constants";
 import HomeStack from "./components/HomeStack";
 import ProfileStack from "./components/ProfileStack";
+import ContactStack from "./components/ContactStack";
 
 // import { auth } from "./database/firebaseDB";
 
@@ -47,10 +48,7 @@ export default function App() {
         <Stack.Screen component={SignupScreen} name={SIGNUP_SCREEN} />
         <Stack.Screen component={HomeStack} name={HOME_STACK} />
         <Stack.Screen component={ProfileStack} name={PROFILE_STACK} />
-
-        {/* <Stack.Screen component={ProfileScreen} name={PROFILE_SCREEN} />
-        <Stack.Screen component={PostScreen} name={POST_SCREEN} />
-        <Stack.Screen component={AddScreen} name={ADD_SCREEN} /> */}
+        <Stack.Screen component={ContactStack} name={CONTACT_STACK} />
 
       </Stack.Navigator>
     </NavigationContainer>

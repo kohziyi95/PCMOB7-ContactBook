@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   View,
   Image,
+  ScrollView,
+  KeyboardAvoidingView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
@@ -29,111 +31,122 @@ export default function SignupScreen() {
   async function signup() {
     setLoading(true);
     Keyboard.dismiss();
-    if (password == confirmPassword){
+    if (password == confirmPassword) {
       auth
-      .createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
+        .createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
 
-        db.collection("users")
-          .doc(user.uid)
-          .set({ name: name, mobile: mobile, email: email, birthday: birthday })
-          .then(() => {
-            console.log("user added.");
-          }).catch((error) => {
-            console.log("Error adding user:", error)
-          });
-        navigation.navigate(LOGIN_SCREEN);
+          db.collection("users")
+            .doc(user.uid)
+            .set({
+              name: name,
+              mobile: mobile,
+              email: email,
+              birthday: birthday,
+            })
+            .then(() => {
+              console.log("user added.");
+            })
+            .catch((error) => {
+              console.log("Error adding user:", error);
+            });
+          navigation.navigate(LOGIN_SCREEN);
 
-        // ...
-      })
-      .catch((error) => {
-        console.log(error);
-        setErrorText(error);
-      });
-
+          // ...
+        })
+        .catch((error) => {
+          console.log(error.message);
+          setErrorText(error.message);
+        });
     } else {
       setErrorText("Passwords do not match.");
       setPassword("");
       setConfirmPassword("");
     }
-    
+
     setLoading(false);
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Register Account</Text>
-      <TextInput
-        style={styles.inputView}
-        placeholder="Email"
-        value={email}
-        onChangeText={(email) => setEmail(email)}
-      />
-      <TextInput
-        style={styles.inputView}
-        placeholder="Password"
-        secureTextEntry={true}
-        value={password}
-        onChangeText={(pw) => setPassword(pw)}
-      />
-            <TextInput
-        style={styles.inputView}
-        placeholder="Confirm Password"
-        secureTextEntry={true}
-        value={confirmPassword}
-        onChangeText={(pw) => setConfirmPassword(pw)}
-      />
-      <TextInput
-        style={styles.inputView}
-        placeholder="Name"        value={name}
-        onChangeText={(name) => setName(name)}
-      />
-       <TextInput
-        style={styles.inputView}
-        placeholder="Mobile"
-        value={mobile}
-        onChangeText={(mobile) => setMobile(mobile)}
-      />
-       <TextInput
-        style={styles.inputView}
-        placeholder="Birthday (DD-MM-YYYY)"
-        value={birthday}
-        onChangeText={(birthday) => setBirthday(birthday)}
-      />
-      <TouchableOpacity
-        style={styles.button}
-        onPress={async () => {
-          await signup();
-        }}
-      >
-        {loading ? (
-          <ActivityIndicator style={styles.buttonText} />
-        ) : (
-          <Text style={styles.buttonText}>Sign Up!</Text>
-        )}
-      </TouchableOpacity>
-      <Text style={styles.errorText}>{errorText}</Text>
-      <Text style={{ fontWeight: "400", fontSize: 17, padding: 5 }}>
-        {message}
-      </Text>
-      <TouchableOpacity>
-        <Text
-          style={{
-            fontWeight: "400",
-            fontSize: 17,
-            padding: 5,
-            color: "blue",
-            alignSelf: "center",
-          }}
-          onPress={() => {
-            navigation.navigate(LOGIN_SCREEN);
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <ScrollView>
+        <Text style={styles.title}>Register Account</Text>
+        <TextInput
+          style={styles.inputView}
+          placeholder="Email"
+          value={email}
+          onChangeText={(email) => setEmail(email)}
+        />
+        <TextInput
+          style={styles.inputView}
+          placeholder="Password"
+          secureTextEntry={true}
+          value={password}
+          onChangeText={(pw) => setPassword(pw)}
+        />
+        <TextInput
+          style={styles.inputView}
+          placeholder="Confirm Password"
+          secureTextEntry={true}
+          value={confirmPassword}
+          onChangeText={(pw) => setConfirmPassword(pw)}
+        />
+        <TextInput
+          style={styles.inputView}
+          placeholder="Name"
+          value={name}
+          onChangeText={(name) => setName(name)}
+        />
+        <TextInput
+          style={styles.inputView}
+          placeholder="Mobile"
+          value={mobile}
+          onChangeText={(mobile) => setMobile(mobile)}
+        />
+        <TextInput
+          style={styles.inputView}
+          placeholder="Birthday (DD-MM-YYYY)"
+          value={birthday}
+          onChangeText={(birthday) => setBirthday(birthday)}
+        />
+        <TouchableOpacity
+          style={styles.button}
+          onPress={async () => {
+            await signup();
           }}
         >
-          Already have an account? Click here to login!
+          {loading ? (
+            <ActivityIndicator style={styles.buttonText} />
+          ) : (
+            <Text style={styles.buttonText}>Sign Up!</Text>
+          )}
+        </TouchableOpacity>
+        <Text style={styles.errorText}>{errorText}</Text>
+        <Text style={{ fontWeight: "400", fontSize: 17, padding: 5 }}>
+          {message}
         </Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity>
+          <Text
+            style={{
+              fontWeight: "400",
+              fontSize: 17,
+              padding: 5,
+              color: "blue",
+              alignSelf: "center",
+            }}
+            onPress={() => {
+              navigation.navigate(LOGIN_SCREEN);
+            }}
+          >
+            Already have an account? Click here to login!
+          </Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 

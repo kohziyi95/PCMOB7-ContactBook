@@ -1,4 +1,12 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  FlatList,
+  ScrollView,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -6,45 +14,72 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 export default function HomeScreen() {
   const navigation = useNavigation();
-//   const [name, setName] = useState("loading...");
-//   const auth = getAuth();
-//   onAuthStateChanged(auth, (user) => {
-//     if (user) {
-//       const uid = user.uid;
-//       // ...
-//     } else {
-//       // User is signed out
-//       // ...
-//     }
 
-//   async function loadName() {
-//     const token = await AsyncStorage.getItem("token");
-//     try {
-//       const response = await axios.get(API + API_WHOAMI, {
-//         headers: { Authorization: `JWT ${token}` },
-//       });
-//       setUsername(response.data.username);
-//     } catch (error) {
-//       console.log(error.response.data);
-//     }
-//   }
+  const contacts = [
+    {
+      id: 1,
+      name: "John Tan",
+      birthday: "09-09-1998",
+    },
+    {
+      id: 2,
+      name: "Peter Chan",
+      birthday: "20-09-1993",
+    },
+  ];
+  function renderItem({ item }) {
+    return (
+      // <Animated.View
+      //   entering={SlideInLeft.delay(item.index * 100)}
+      //   exiting={SlideOutRight.delay(300)}
+      // >
+      <View>
+        <TouchableOpacity style={styles.noteCard} onPress={() => {}}>
+          <Text style={styles.contactName}>{item.birthday}</Text>
+          <Text>{"         "}</Text>
+          <Text style={styles.contactName}>{item.name}</Text>
 
-//   useEffect(() => {
-//     const removeListener = navigation.addListener("focus", () => {
-//       loadUsername();
-//       loadPhoto();
-//     });
-//     loadUsername();
-//     loadPhoto();
-
-//     return () => {
-//       removeListener();
-//     };
-//   }, []);
+          {/* <Text style={styles.noteCardBodyText}>{item.mobile}</Text> */}
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome!</Text>
+      <View style={styles.dateContainer}>
+        <Text
+          style={{
+            fontWeight: "500",
+            fontSize: 32,
+            marginBottom: 10,
+            alignSelf: "center",
+          }}
+        >
+          Saturday
+        </Text>
+        <Text
+          style={{
+            fontWeight: "400",
+            fontSize: 22,
+            marginBottom: 20,
+            alignSelf: "center",
+          }}
+        >
+          17/09/2022
+        </Text>
+      </View>
+      <Text style={styles.calendarTitle}>
+        Upcoming Birthdays for the Month of September!
+      </Text>
+      <ScrollView style={styles.calendar}>
+        <FlatList
+          data={contacts}
+          renderItem={renderItem}
+          keyExtractor={(contact) => contact.id.toString()}
+        />
+      </ScrollView>
     </View>
   );
 }
@@ -56,10 +91,38 @@ const styles = StyleSheet.create({
     paddingTop: 100,
     padding: 25,
   },
+  dateContainer: {
+    flex: 0.3,
+    padding: 25,
+    margin: 10,
+    alignItems: "center",
+  },
+  noteCard: {
+    borderColor: "gray",
+    borderWidth: "1px",
+    padding: 15,
+    borderRadius: 5,
+    marginBottom: 10,
+    flexDirection: "row",
+  },
+  calendar: {
+    flex: 1,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: "black",
+    margin: 20,
+  },
   title: {
     fontWeight: "bold",
     fontSize: 40,
     marginBottom: 20,
+    alignSelf: "center",
+  },
+  calendarTitle: {
+    fontWeight: "500",
+    fontSize: 20,
+    textAlign: "center",
+    alignSelf: "center",
   },
   outlinedButton: {
     borderRadius: 3,
@@ -73,11 +136,7 @@ const styles = StyleSheet.create({
     padding: 15,
     color: "black",
   },
-  button: {
-    backgroundColor: "black",
-    borderRadius: 15,
-    width: "100%",
-  },
+
   buttonText: {
     textAlign: "center",
     fontWeight: "400",

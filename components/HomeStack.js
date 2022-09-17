@@ -1,9 +1,10 @@
 import { FontAwesome } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
-import { HOME_SCREEN, PROFILE_STACK } from "../constants";
+import { HOME_SCREEN, PROFILE_STACK , CONTACT_STACK } from "../constants";
 import HomeScreen from "../screens/HomeScreen";
 import ProfileStack from "./ProfileStack";
+import ContactStack from "./ContactStack";
 
 const BottomTab = createBottomTabNavigator();
 
@@ -30,7 +31,7 @@ export default function HomeStack() {
       })}
     >
       <BottomTab.Screen name={HOME_SCREEN} component={HomeScreen} />
-      {/* <BottomTab.Screen name={CONTACT_STACK} component={ContactStack} /> */}
+      <BottomTab.Screen name={CONTACT_STACK} component={ContactStack} />
       <BottomTab.Screen name={PROFILE_STACK} component={ProfileStack} />
     </BottomTab.Navigator>
   );

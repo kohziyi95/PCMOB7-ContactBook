@@ -1,7 +1,7 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { LOGIN_SCREEN } from "../constants";
+import { LOGIN_SCREEN , PROFILE_SCREEN, PROFILE_STACK } from "../constants";
 import { db, auth } from "../database/firebaseDB";
 import { FontAwesome } from "@expo/vector-icons";
 
@@ -16,14 +16,7 @@ export default function ProfileScreen() {
     const subscriber = db
       .collection("users")
       .doc(auth.currentUser.uid)
-      // .get()
-      // .then((documentSnapshot) => {
-      //   console.log("User exists: ", documentSnapshot.exists);
 
-      //   if (documentSnapshot.exists) {
-      //     console.log("User data: ", documentSnapshot.data());
-      //     setUser(documentSnapshot.data());
-      //   }
       .onSnapshot((documentSnapshot) => {
         console.log("User exists: ", documentSnapshot.exists);
 
@@ -37,39 +30,6 @@ export default function ProfileScreen() {
 
     return () => subscriber();
   }, []);
-  //   }
-
-  // const [photoUri, setPhotoUri] = useState(null);
-
-  //   async function loadPhoto() {
-  //     const photo = await AsyncStorage.getItem("photo_uri");
-  //     setPhotoUri(photo);
-  //   }
-
-  //   async function loadUsername() {
-  //     const token = await AsyncStorage.getItem("token");
-  //     try {
-  //       const response = await axios.get(API + API_WHOAMI, {
-  //         headers: { Authorization: `JWT ${token}` },
-  //       });
-  //       setUsername(response.data.username);
-  //     } catch (error) {
-  //       console.log(error.response.data);
-  //     }
-  //   }
-
-  //   useEffect(() => {
-  //     const removeListener = navigation.addListener("focus", () => {
-  //       loadUsername();
-  //       loadPhoto();
-  //     });
-  //     loadUsername();
-  //     loadPhoto();
-
-  //     return () => {
-  //       removeListener();
-  //     };
-  //   }, []);
 
   async function logout() {
     auth
@@ -112,7 +72,7 @@ export default function ProfileScreen() {
         </Text>
       </View>
 
-      <TouchableOpacity onPress={() => {}}>
+      <TouchableOpacity onPress={() => {navigation.navigate(PROFILE_SCREEN.Update, user)}}>
         <Text style={styles.editText}>Edit Details</Text>
       </TouchableOpacity>
 

@@ -2,6 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { PROFILE_SCREEN } from "../constants";
 import ProfileScreenHome from "../screens/ProfileScreenHome";
+import ProfileScreenUpdate from "../screens/ProfileScreenUpdate";
 
 const ProfileStackNav = createStackNavigator();
 
@@ -13,11 +14,11 @@ export default function ProfileStack() {
         component={ProfileScreenHome}
         options={{ headerShown: false }}
       />
-      {/* <ProfileStackNav.Screen
+      <ProfileStackNav.Screen
         name={PROFILE_SCREEN.Update}
         component={ProfileScreenUpdate}
         options={{ headerShown: false }}
-      /> */}
+      />
     </ProfileStackNav.Navigator>
   );
 }
