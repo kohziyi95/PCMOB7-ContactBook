@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   View,
   Image,
+  ScrollView,
 } from "react-native";
 import { db, auth } from "../database/firebaseDB";
 
@@ -51,51 +52,53 @@ export default function ProfileScreenUpdate() {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <FontAwesome name={"arrow-left"} size={24} color={"black"} />
-      </TouchableOpacity>
-      <Text style={styles.title}>Edit Profile</Text>
+      <ScrollView>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <FontAwesome name={"arrow-left"} size={24} color={"black"} />
+        </TouchableOpacity>
+        <Text style={styles.title}>Edit Profile</Text>
 
-      <TouchableOpacity onPress={() => {}}>
-        <Image
-          source={require("../assets/profile-placeholder.jpg")}
-          style={styles.photo}
+        <TouchableOpacity onPress={() => {}}>
+          <Image
+            source={require("../assets/profile-placeholder.jpg")}
+            style={styles.photo}
+          />
+          <Text style={styles.updateText}>Upload Photo</Text>
+        </TouchableOpacity>
+        <Text style={styles.fieldTitle}>Name:</Text>
+        <TextInput
+          style={styles.inputView}
+          placeholder={"Name"}
+          value={name}
+          onChangeText={(text) => setName(text)}
+          selectionColor={"gray"}
         />
-        <Text style={styles.updateText}>Upload Photo</Text>
-      </TouchableOpacity>
-      <Text style={styles.fieldTitle}>Name:</Text>
-      <TextInput
-        style={styles.inputView}
-        placeholder={"Name"}
-        value={name}
-        onChangeText={(text) => setName(text)}
-        selectionColor={"gray"}
-      />
-      <Text style={styles.fieldTitle}>Mobile:</Text>
-      <TextInput
-        style={styles.inputView}
-        placeholder={"Mobile"}
-        value={mobile}
-        onChangeText={(text) => setMobile(text)}
-        selectionColor={"gray"}
-      />
-      <Text style={styles.fieldTitle}>Birthday (DD-MM-YYYY)</Text>
-      <TextInput
-        style={styles.inputView}
-        placeholder={"Birthday (DD-MM-YYYY)"}
-        value={birthday}
-        onChangeText={(text) => setBirthday(text)}
-        selectionColor={"gray"}
-      />
-      <View style={{ flex: 1 }} />
-      <TouchableOpacity
-        style={styles.button}
-        onPress={async () => {
-          await saveProfile();
-        }}
-      >
-        <Text style={styles.buttonText}>Update Profile</Text>
-      </TouchableOpacity>
+        <Text style={styles.fieldTitle}>Mobile:</Text>
+        <TextInput
+          style={styles.inputView}
+          placeholder={"Mobile"}
+          value={mobile}
+          onChangeText={(text) => setMobile(text)}
+          selectionColor={"gray"}
+        />
+        <Text style={styles.fieldTitle}>Birthday (DD-MM-YYYY)</Text>
+        <TextInput
+          style={styles.inputView}
+          placeholder={"Birthday (DD-MM-YYYY)"}
+          value={birthday}
+          onChangeText={(text) => setBirthday(text)}
+          selectionColor={"gray"}
+        />
+        <View style={{ flex: 1 }} />
+        <TouchableOpacity
+          style={styles.button}
+          onPress={async () => {
+            await saveProfile();
+          }}
+        >
+          <Text style={styles.buttonText}>Update Profile</Text>
+        </TouchableOpacity>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 }

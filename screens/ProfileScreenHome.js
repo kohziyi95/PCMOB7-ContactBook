@@ -76,23 +76,12 @@ export default function ProfileScreen() {
         <Text style={styles.editText}>Edit Details</Text>
       </TouchableOpacity>
 
-      {/* <Image
-        source={{ uri: photoUri ?? imgPlaceholder }}
-        style={{ height: 200, width: 200, borderRadius: 200, marginBottom: 20 }}
-      />
-      <TouchableOpacity
-        style={styles.outlinedButton}
-        onPress={() => navigation.navigate(CAMERA_SCREEN)}
-      >
-        <Text style={styles.outlinedButtonText}>Upload Photo</Text>
-      </TouchableOpacity> */}
       <View style={{ flex: 1 }} />
       <TouchableOpacity
         style={styles.button}
         onPress={async () => {
           await logout().then(() => {
             navigation.navigate(LOGIN_SCREEN);
-            setUsername("loading...");
           });
         }}
       >
