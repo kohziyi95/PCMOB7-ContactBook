@@ -76,7 +76,7 @@ export default function ContactScreenEdit() {
         <TouchableOpacity onPress={() => navigation.goBack(params)}>
           <FontAwesome name={"arrow-left"} size={24} color={"black"} />
         </TouchableOpacity>
-        <Text style={styles.title}>New Contact</Text>
+        <Text style={styles.title}>Edit Contact</Text>
 
         <TouchableOpacity onPress={() => {}}>
           <Image
